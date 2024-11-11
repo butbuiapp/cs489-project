@@ -1,0 +1,16 @@
+li {
+  font-weight: bold;
+  font-size: large;
+}
+
+.header-nav-container {
+  display: flex;
+  align-items: center;
+  gap: 50px; /* Adds space between header and nav */
+  justify-content: space-between; /* Adjusts space between header and nav */
+  
+}
+
+.navbar {
+  flex-grow: 1; /* Allows navbar to take available space */
+}

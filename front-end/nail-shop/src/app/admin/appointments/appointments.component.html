@@ -1,0 +1,30 @@
+<h2>Appointment Management</h2>
+<br/>
+
+<div class="mb-3">
+  <strong>Search by date:</strong> 
+  <input type="date" id="appointmentDate" [formControl]="appointmentDate" class="ms-2"/>
+  <button type="button" class="btn btn-primary ms-2" (click)="onSearch()">Search</button>
+</div>
+
+ <!-- Error message display -->
+ @if (errorMessage) {
+  <div class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+ }
+ 
+ <div class="appointments-container">
+  <!-- Loop through each appointment -->
+  <div *ngIf="appointments?.length">
+    <div *ngFor="let appointment of appointments; trackBy: trackByAppointmentId" class="appointment-card">
+      <app-appointment [appointment]="appointment"></app-appointment>
+    </div>
+  </div>
+
+  <!-- Empty State Message -->
+  <div *ngIf="appointments.length === 0" class="no-appointments">
+    <p>There are no appointments yet.</p>
+  </div>
+</div>
+
