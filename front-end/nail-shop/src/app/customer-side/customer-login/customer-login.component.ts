@@ -1,7 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { LoginRequestDto } from '../../model/login.model';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-customer-login',
@@ -10,11 +12,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './customer-login.component.html',
   styleUrl: './customer-login.component.css'
 })
-export class CustomerLoginComponent {
+export class CustomerLoginComponent implements OnInit {
   loginForm!: FormGroup;
+  errorMessage: string | null = null;
 
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
+  private authService = inject(AuthService);
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -24,14 +28,22 @@ export class CustomerLoginComponent {
   }
 
   onSubmit() {
+    this.errorMessage = null;
     if (this.loginForm.valid) {
-      const phoneNumber = this.loginForm.value.phoneNumber;
-      const password = this.loginForm.value.password;
-      console.log('Login attempt with:', phoneNumber, password);
-      // Your login logic here, like an API call
-      this.router.navigate(['./customer/appointment']);
+      const loginRequest: LoginRequestDto = this.loginForm.value;
+      this.authService.customerLogin(loginRequest).subscribe(
+        (response) => {
+          this.authService.storeLoginInfo(response);
+          this.router.navigate(['./customer/my-appointments']);
+        },
+        (error) => {
+          if (error.error) {
+            this.errorMessage = error.error;            
+          }
+        }
+      );    
     } else {
-      alert('Input is invalid.');
+      this.errorMessage = 'Input is invalid.';
     }
   }
 }

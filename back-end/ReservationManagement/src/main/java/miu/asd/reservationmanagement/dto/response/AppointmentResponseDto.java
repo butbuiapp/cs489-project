@@ -1,4 +1,4 @@
-package miu.asd.reservationmanagement.dto;
+package miu.asd.reservationmanagement.dto.response;
 
 import lombok.*;
 import miu.asd.reservationmanagement.model.Invoice;

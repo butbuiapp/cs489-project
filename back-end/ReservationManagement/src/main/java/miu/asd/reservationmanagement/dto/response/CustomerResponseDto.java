@@ -1,23 +1,19 @@
-package miu.asd.reservationmanagement.dto;
+package miu.asd.reservationmanagement.dto.response;
 
-import lombok.*;
-import miu.asd.reservationmanagement.common.RoleEnum;
+import lombok.Getter;
+import lombok.Setter;
 import miu.asd.reservationmanagement.common.UserStatusEnum;
 
 import java.time.LocalDate;
 
-@Setter
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class EmployeeRequestDto {
+@Setter
+public class CustomerResponseDto {
     private Long id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
     private String email;
     private LocalDate dob;
-    private String password;
-    private RoleEnum role;
+    private UserStatusEnum status;
 }

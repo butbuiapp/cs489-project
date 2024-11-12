@@ -1,7 +1,8 @@
 package miu.asd.reservationmanagement.service;
 
-import miu.asd.reservationmanagement.dto.CustomerRequestDto;
-import miu.asd.reservationmanagement.dto.CustomerResponseDto;
+import miu.asd.reservationmanagement.dto.request.ChangePasswordRequestDto;
+import miu.asd.reservationmanagement.dto.request.CustomerRequestDto;
+import miu.asd.reservationmanagement.dto.response.CustomerResponseDto;
 import java.util.List;
 
 public interface CustomerService {
@@ -11,4 +12,5 @@ public interface CustomerService {
     List<CustomerResponseDto> getActiveCustomers();
     CustomerResponseDto getCustomerById(Long id);
     CustomerResponseDto getCustomerByPhone(String phoneNumber);
+    void changePassword(Long id, ChangePasswordRequestDto dto);
 }

@@ -1,7 +1,7 @@
 package miu.asd.reservationmanagement.mapper;
 
-import miu.asd.reservationmanagement.dto.EmployeeRequestDto;
-import miu.asd.reservationmanagement.dto.EmployeeResponseDto;
+import miu.asd.reservationmanagement.dto.request.EmployeeRequestDto;
+import miu.asd.reservationmanagement.dto.response.EmployeeResponseDto;
 import miu.asd.reservationmanagement.model.Employee;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

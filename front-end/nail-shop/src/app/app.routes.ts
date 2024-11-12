@@ -11,6 +11,8 @@ import { CustomerRegistrationComponent } from './customer-side/customer-registra
 import { CustomerLoginComponent } from './customer-side/customer-login/customer-login.component';
 import { CustomerCardComponent } from './customer-side/shared/customer-card/customer-card.component';
 import { CustomerAppointmentComponent } from './customer-side/customer-appointment/customer-appointment.component';
+import { CustomerChangePasswordComponent } from './customer-side/customer-change-password/customer-change-password.component';
+import { CustomerProfileComponent } from './customer-side/customer-profile/customer-profile.component';
 
 export const routes: Routes = [
   {
@@ -56,11 +58,23 @@ export const routes: Routes = [
     title: 'Customer Login Page'
   },
   {
-    path: 'customer', component: CustomerCardComponent,
+    path: 'customer', 
+    component: CustomerCardComponent,
     children: [
       {
-        path: 'appointment', 
-        component: CustomerAppointmentComponent
+        path: 'my-appointments', 
+        component: CustomerAppointmentComponent,
+        title: 'My Appointments'
+      },
+      {
+        path: 'profile', 
+        component: CustomerProfileComponent,
+        title: 'My Profile'
+      },
+      {
+        path: 'change-password', 
+        component: CustomerChangePasswordComponent,
+        title: 'Change Password'
       }
     ]
   },

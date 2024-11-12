@@ -1,10 +1,12 @@
 package miu.asd.reservationmanagement.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import miu.asd.reservationmanagement.common.RoleEnum;
 import miu.asd.reservationmanagement.common.UserStatusEnum;
-import miu.asd.reservationmanagement.dto.EmployeeRequestDto;
-import miu.asd.reservationmanagement.dto.EmployeeResponseDto;
+import miu.asd.reservationmanagement.configuration.SecurityConfig;
+import miu.asd.reservationmanagement.dto.request.ChangePasswordRequestDto;
+import miu.asd.reservationmanagement.dto.request.EmployeeRequestDto;
+import miu.asd.reservationmanagement.dto.response.EmployeeResponseDto;
+import miu.asd.reservationmanagement.exception.InvalidPasswordException;
 import miu.asd.reservationmanagement.exception.NotFoundException;
 import miu.asd.reservationmanagement.exception.RecordAlreadyExistsException;
 import miu.asd.reservationmanagement.mapper.EmployeeMapper;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final RoleRepository roleRepository;
+    private final SecurityConfig securityConfig;
 
     @Override
     public void saveEmployee(EmployeeRequestDto employeeRequestDto) {
@@ -37,6 +40,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         // map dto to entity
         Employee employee = EmployeeMapper.MAPPER.dtoToEntity(employeeRequestDto);
         employee.setStatus(UserStatusEnum.ACTIVE);
+        // encode password
+        employee.setPassword(securityConfig.passwordEncoder().encode(employeeRequestDto.getPassword()));
         // get role
         Role role = roleRepository.findByRole(employeeRequestDto.getRole());
         employee.setRole(role);
@@ -70,8 +75,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 }
                 employeeRepository.save(existingEmployee);
             }
-        } else {
-            throw new NotFoundException("Employee not found");
         }
     }
 
@@ -82,8 +85,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             Employee employee = optionalEmployee.get();
             employee.setStatus(UserStatusEnum.DELETED);
             employeeRepository.save(employee);
-        } else {
-            throw new NotFoundException("Employee not found");
         }
     }
 
@@ -96,14 +97,37 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponseDto getEmployeeById(Long id) {
         Optional<Employee> optionalEmployee = findById(id);
-        if (optionalEmployee.isPresent()) {
-            return EmployeeMapper.MAPPER.entityToDto(optionalEmployee.get());
-        } else {
-            throw new NotFoundException("Employee not found");
+        return EmployeeMapper.MAPPER.entityToDto(optionalEmployee.get());
+    }
+
+    @Override
+    public void changePassword(Long id, ChangePasswordRequestDto dto) {
+        // check new password and confirm password
+        if (!dto.getNewPassword().equals(dto.getConfirmPassword())) {
+            throw new InvalidPasswordException("Passwords do not match.");
         }
+        Employee employee = findById(id).get();
+        // check phone number
+        if (!employee.getPhoneNumber().equals(dto.getPhoneNumber())) {
+            throw new InvalidPasswordException("The phone number is incorrect.");
+        }
+
+        // check old password
+        if (!securityConfig.passwordEncoder().matches(dto.getOldPassword(), employee.getPassword())) {
+            throw new InvalidPasswordException("The old password is incorrect.");
+        }
+
+        // save new password
+        employee.setPassword(securityConfig.passwordEncoder().encode(dto.getNewPassword()));
+        employeeRepository.save(employee);
     }
 
     private Optional<Employee> findById(Long id) {
-        return employeeRepository.findByIdAndStatus(id, UserStatusEnum.ACTIVE);
+        Optional<Employee> optionalEmployee =
+                employeeRepository.findByIdAndStatus(id, UserStatusEnum.ACTIVE);
+        if (optionalEmployee.isPresent()) {
+            return optionalEmployee;
+        }
+        throw new NotFoundException("Employee not found");
     }
 }

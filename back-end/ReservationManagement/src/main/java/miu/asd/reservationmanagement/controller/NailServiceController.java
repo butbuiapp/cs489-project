@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class NailServiceController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateService(@PathVariable Integer id, @RequestBody NailService nailService) {
         nailServiceService.updateService(id, nailService);
-        return ResponseEntity.ok().body("Nail service updated successfully");
+        return ResponseEntity.ok().body(Map.of("message", "Nail service updated successfully"));
     }
 
     @GetMapping
@@ -42,7 +43,7 @@ public class NailServiceController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteService(@PathVariable Integer id) {
         nailServiceService.deleteServiceById(id);
-        return ResponseEntity.ok().body("Nail service deleted successfully");
+        return ResponseEntity.ok().body(Map.of("message", "Nail service deleted successfully"));
     }
 }
 

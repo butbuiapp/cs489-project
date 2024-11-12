@@ -1,9 +1,9 @@
 package miu.asd.reservationmanagement.service;
 
 import miu.asd.reservationmanagement.common.AppointmentStatusEnum;
-import miu.asd.reservationmanagement.dto.AppointmentRequestDto;
-import miu.asd.reservationmanagement.dto.AppointmentResponseDto;
-import miu.asd.reservationmanagement.dto.AppointmentSearchRequestDto;
+import miu.asd.reservationmanagement.dto.request.AppointmentRequestDto;
+import miu.asd.reservationmanagement.dto.response.AppointmentResponseDto;
+import miu.asd.reservationmanagement.dto.request.AppointmentSearchRequestDto;
 
 import java.util.List;
 

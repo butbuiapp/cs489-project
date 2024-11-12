@@ -2,12 +2,15 @@ package miu.asd.reservationmanagement.controller;
 
 import lombok.RequiredArgsConstructor;
 import miu.asd.reservationmanagement.common.Constant;
-import miu.asd.reservationmanagement.dto.*;
+import miu.asd.reservationmanagement.dto.request.AppointmentRequestDto;
+import miu.asd.reservationmanagement.dto.request.AppointmentSearchRequestDto;
+import miu.asd.reservationmanagement.dto.response.AppointmentResponseDto;
 import miu.asd.reservationmanagement.service.AppointmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +21,7 @@ public class AppointmentController {
     @PostMapping
     public ResponseEntity<?> createAppointment(@RequestBody AppointmentRequestDto appointmentRequestDto) {
         appointmentService.saveAppointment(appointmentRequestDto);
-        return ResponseEntity.ok().body("Appointment created successfully");
+        return ResponseEntity.ok().body(Map.of("message", "Appointment created successfully"));
     }
 
     @GetMapping("/customer/{customerId}")

@@ -4,13 +4,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CustomerService } from '../../service/customer.service';
 
 @Component({
-  selector: 'app-customer-registration',
+  selector: 'app-customer-profile',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './customer-registration.component.html',
-  styleUrl: './customer-registration.component.css'
+  templateUrl: './customer-profile.component.html',
+  styleUrl: './customer-profile.component.css'
 })
-export class CustomerRegistrationComponent implements OnInit {
+export class CustomerProfileComponent implements OnInit {
   errorMessage: string | null = null;
   infoMessage: string | null = null;
   customerForm! : FormGroup;
@@ -24,7 +24,6 @@ export class CustomerRegistrationComponent implements OnInit {
       phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       email: ['', [Validators.email]],
       dob: ['', []],
-      password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 
@@ -48,4 +47,5 @@ export class CustomerRegistrationComponent implements OnInit {
       this.errorMessage = 'Input is invalid.';
     }
   }
+
 }

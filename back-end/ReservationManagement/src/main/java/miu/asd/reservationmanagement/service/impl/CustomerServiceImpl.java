@@ -3,12 +3,16 @@ package miu.asd.reservationmanagement.service.impl;
 import lombok.RequiredArgsConstructor;
 import miu.asd.reservationmanagement.common.RoleEnum;
 import miu.asd.reservationmanagement.common.UserStatusEnum;
-import miu.asd.reservationmanagement.dto.CustomerRequestDto;
-import miu.asd.reservationmanagement.dto.CustomerResponseDto;
+import miu.asd.reservationmanagement.configuration.SecurityConfig;
+import miu.asd.reservationmanagement.dto.request.ChangePasswordRequestDto;
+import miu.asd.reservationmanagement.dto.request.CustomerRequestDto;
+import miu.asd.reservationmanagement.dto.response.CustomerResponseDto;
+import miu.asd.reservationmanagement.exception.InvalidPasswordException;
 import miu.asd.reservationmanagement.exception.NotFoundException;
 import miu.asd.reservationmanagement.exception.RecordAlreadyExistsException;
 import miu.asd.reservationmanagement.mapper.CustomerMapper;
 import miu.asd.reservationmanagement.model.Customer;
+import miu.asd.reservationmanagement.model.Employee;
 import miu.asd.reservationmanagement.model.Role;
 import miu.asd.reservationmanagement.repository.CustomerRepository;
 import miu.asd.reservationmanagement.repository.RoleRepository;
@@ -24,6 +28,7 @@ import java.util.stream.Collectors;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final RoleRepository roleRepository;
+    private final SecurityConfig securityConfig;
 
     @Override
     public void saveCustomer(CustomerRequestDto customerRequestDto) {
@@ -40,6 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
         // get role
         Role role = roleRepository.findByRole(RoleEnum.CUSTOMER);
         customer.setRole(role);
+        customer.setPassword(securityConfig.passwordEncoder().encode(customerRequestDto.getPassword()));
         customerRepository.save(customer);
     }
 
@@ -107,6 +113,26 @@ public class CustomerServiceImpl implements CustomerService {
         } else {
             throw new NotFoundException("Customer not found");
         }
+    }
+
+    @Override
+    public void changePassword(Long id, ChangePasswordRequestDto dto) {
+        // check new password and confirm password
+        if (!dto.getNewPassword().equals(dto.getConfirmPassword())) {
+            throw new InvalidPasswordException("Passwords do not match.");
+        }
+        Customer customer = findById(id).get();
+        // check phone number
+        if (!customer.getPhoneNumber().equals(dto.getPhoneNumber())) {
+            throw new InvalidPasswordException("The phone number is incorrect.");
+        }
+        // check old password
+        if (!securityConfig.passwordEncoder().matches(dto.getOldPassword(), customer.getPassword())) {
+            throw new InvalidPasswordException("The old password is incorrect.");
+        }
+        // save new password
+        customer.setPassword(securityConfig.passwordEncoder().encode(dto.getNewPassword()));
+        customerRepository.save(customer);
     }
 
     private Optional<Customer> findById(Long id) {

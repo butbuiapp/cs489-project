@@ -2,12 +2,14 @@ package miu.asd.reservationmanagement.controller;
 
 import lombok.RequiredArgsConstructor;
 import miu.asd.reservationmanagement.common.Constant;
-import miu.asd.reservationmanagement.dto.CustomerRequestDto;
-import miu.asd.reservationmanagement.dto.CustomerResponseDto;
+import miu.asd.reservationmanagement.dto.request.ChangePasswordRequestDto;
+import miu.asd.reservationmanagement.dto.request.CustomerRequestDto;
+import miu.asd.reservationmanagement.dto.response.CustomerResponseDto;
 import miu.asd.reservationmanagement.service.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,13 +20,13 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<?> createCustomer(@RequestBody CustomerRequestDto customerRequestDto) {
         customerService.saveCustomer(customerRequestDto);
-        return ResponseEntity.ok().body("Customer created successfully");
+        return ResponseEntity.ok().body(Map.of("message", "Customer created successfully"));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCustomer(@PathVariable Long id, @RequestBody CustomerRequestDto customerRequestDto) {
         customerService.updateCustomer(id, customerRequestDto);
-        return ResponseEntity.ok().body("Customer updated successfully");
+        return ResponseEntity.ok().body(Map.of("message", "Customer updated successfully"));
     }
 
     @GetMapping
@@ -48,7 +50,14 @@ public class CustomerController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomerById(id);
-        return ResponseEntity.ok().body("Customer deleted successfully");
+        return ResponseEntity.ok().body(Map.of("message", "Customer deleted successfully"));
     }
 
+    @PutMapping("/change-password/{id}")
+    public ResponseEntity<?> changePassword(
+            @PathVariable Long id,
+            @RequestBody ChangePasswordRequestDto changePasswordRequestDto) {
+        customerService.changePassword(id, changePasswordRequestDto);
+        return ResponseEntity.ok().body(Map.of("message", "Password changed successfully"));
+    }
 }

@@ -3,6 +3,7 @@ import { Constants } from "../common/constants";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Employee } from "../model/employee.model";
+import { ChangePasswordDto } from "../model/change-password.model";
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,9 @@ export class EmployeeService {
 
   deleteEmployee(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  changePassword(id: number, changePasswordDto: ChangePasswordDto): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/change-password/${id}`, changePasswordDto);
   }
 }

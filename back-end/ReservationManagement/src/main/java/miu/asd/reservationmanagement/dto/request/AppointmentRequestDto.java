@@ -1,4 +1,4 @@
-package miu.asd.reservationmanagement.dto;
+package miu.asd.reservationmanagement.dto.request;
 
 import lombok.*;
 

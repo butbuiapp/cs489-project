@@ -1,8 +1,8 @@
 package miu.asd.reservationmanagement.service;
 
-import miu.asd.reservationmanagement.common.RoleEnum;
-import miu.asd.reservationmanagement.dto.EmployeeRequestDto;
-import miu.asd.reservationmanagement.dto.EmployeeResponseDto;
+import miu.asd.reservationmanagement.dto.request.ChangePasswordRequestDto;
+import miu.asd.reservationmanagement.dto.request.EmployeeRequestDto;
+import miu.asd.reservationmanagement.dto.response.EmployeeResponseDto;
 
 import java.util.List;
 
@@ -12,4 +12,5 @@ public interface EmployeeService {
     void deleteEmployeeById(Long id);
     List<EmployeeResponseDto> getActiveEmployees();
     EmployeeResponseDto getEmployeeById(Long id);
+    void changePassword(Long id, ChangePasswordRequestDto dto);
 }

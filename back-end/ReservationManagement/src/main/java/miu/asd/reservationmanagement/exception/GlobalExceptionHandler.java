@@ -23,4 +23,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleHttpRequestMethodNotSupportedException(RecordAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(ex.getMessage());
     }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<?> handleInvalidPasswordException(InvalidPasswordException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 }

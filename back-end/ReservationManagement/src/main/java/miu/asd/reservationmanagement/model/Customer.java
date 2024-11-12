@@ -27,7 +27,7 @@ public class Customer {
     @Column(length = 50)
     private String email;
     private LocalDate dob;
-    @Column(length = 15)
+    @Column(length = 100)
     private String password;
 
     @ManyToOne
