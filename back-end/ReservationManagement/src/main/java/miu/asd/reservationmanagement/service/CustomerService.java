@@ -12,5 +12,5 @@ public interface CustomerService {
     List<CustomerResponseDto> getActiveCustomers();
     CustomerResponseDto getCustomerById(Long id);
     CustomerResponseDto getCustomerByPhone(String phoneNumber);
-    void changePassword(Long id, ChangePasswordRequestDto dto);
+    void changePassword(String phoneNumber, ChangePasswordRequestDto dto);
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { CustomerService } from '../../service/customer.service';
 import { ChangePasswordDto } from '../../model/change-password.model';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-customer-change-password',
@@ -15,10 +16,11 @@ export class CustomerChangePasswordComponent implements OnInit {
   changePasswordForm!: FormGroup;
   errorMessage: string | null = null;
   infoMessage: string | null = null;
-  customerId: number = 13;
+  phoneNumber: string = '';
 
   private formBuilder = inject(FormBuilder);
   private customerService = inject(CustomerService);
+  private authService = inject(AuthService);
 
   ngOnInit(): void {
     this.changePasswordForm = this.formBuilder.group({
@@ -27,6 +29,7 @@ export class CustomerChangePasswordComponent implements OnInit {
       newPassword: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
     });
+    this.phoneNumber = this.authService.getLoggedInUsername();
   }
 
   onSubmit() {
@@ -35,7 +38,7 @@ export class CustomerChangePasswordComponent implements OnInit {
     if (this.changePasswordForm.valid) {
       const changePasswordDto: ChangePasswordDto = this.changePasswordForm.value;
       
-      this.customerService.changePassword(this.customerId, changePasswordDto).subscribe(
+      this.customerService.changePassword(this.phoneNumber, changePasswordDto).subscribe(
         (response: any) => {
           this.infoMessage = response.message;
           this.changePasswordForm.reset();

@@ -10,11 +10,17 @@ import { CustomerAppointmentsComponent } from './admin/customers/customer-appoin
 import { CustomerRegistrationComponent } from './customer-side/customer-registration/customer-registration.component';
 import { CustomerLoginComponent } from './customer-side/customer-login/customer-login.component';
 import { CustomerCardComponent } from './customer-side/shared/customer-card/customer-card.component';
-import { CustomerAppointmentComponent } from './customer-side/customer-appointment/customer-appointment.component';
+import { MyAppointmentsComponent } from './customer-side/my-appointments/my-appointments.component';
 import { CustomerChangePasswordComponent } from './customer-side/customer-change-password/customer-change-password.component';
 import { CustomerProfileComponent } from './customer-side/customer-profile/customer-profile.component';
+import { NewAppointmentComponent } from './customer-side/my-appointments/new-appointment/new-appointment.component';
 
 export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'customer/login',
+    pathMatch: 'full'
+  },
   {
     path: 'admin/login', 
     component: LoginComponent,
@@ -63,8 +69,13 @@ export const routes: Routes = [
     children: [
       {
         path: 'my-appointments', 
-        component: CustomerAppointmentComponent,
+        component: MyAppointmentsComponent,
         title: 'My Appointments'
+      },
+      {
+        path: 'new-appointment', 
+        component: NewAppointmentComponent,
+        title: 'New Appointment'
       },
       {
         path: 'profile', 

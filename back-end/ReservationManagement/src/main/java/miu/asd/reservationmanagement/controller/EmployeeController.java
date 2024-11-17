@@ -7,6 +7,7 @@ import miu.asd.reservationmanagement.dto.request.EmployeeRequestDto;
 import miu.asd.reservationmanagement.dto.response.EmployeeResponseDto;
 import miu.asd.reservationmanagement.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,36 +20,42 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @PostMapping
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<?> createEmployee(@RequestBody EmployeeRequestDto employeeRequestDto) {
         employeeService.saveEmployee(employeeRequestDto);
         return ResponseEntity.ok().body(Map.of("message", "Employee created successfully"));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'TECHNICIAN')")
     public ResponseEntity<?> updateEmployee(@PathVariable Long id, @RequestBody EmployeeRequestDto employeeRequestDto) {
         employeeService.updateEmployee(id, employeeRequestDto);
         return ResponseEntity.ok().body(Map.of("message", "Employee updated successfully"));
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
     public ResponseEntity<?> getActiveEmployees() {
         List<EmployeeResponseDto> employees = employeeService.getActiveEmployees();
         return ResponseEntity.ok().body(employees);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCustomerById(@PathVariable Long id) {
+    @PreAuthorize("hasAnyRole('MANAGER', 'TECHNICIAN')")
+    public ResponseEntity<?> getEmployeeById(@PathVariable Long id) {
         EmployeeResponseDto employeeResponseDto = employeeService.getEmployeeById(id);
         return ResponseEntity.ok().body(employeeResponseDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
+    @PreAuthorize("hasRole('MANAGER')")
+    public ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployeeById(id);
         return ResponseEntity.ok().body(Map.of("message", "Employee deleted successfully"));
     }
 
     @PutMapping("/change-password/{id}")
+    @PreAuthorize("hasRole('TECHNICIAN')")
     public ResponseEntity<?> changePassword(
             @PathVariable Long id,
             @RequestBody ChangePasswordRequestDto changePasswordRequestDto) {

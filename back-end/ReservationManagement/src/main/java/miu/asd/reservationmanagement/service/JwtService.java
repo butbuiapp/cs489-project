@@ -1,7 +1,9 @@
 package miu.asd.reservationmanagement.service;
 
-import miu.asd.reservationmanagement.common.RoleEnum;
+import io.jsonwebtoken.Claims;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface JwtService {
-    String generateToken(String phoneNumber, String fullName, RoleEnum role);
+    String generateToken(UserDetails userDetails);
+    Claims getClaimsFromToken(String token);
 }

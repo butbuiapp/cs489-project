@@ -24,8 +24,8 @@ h2 {
 
 label {
   display: block;
-  font-weight: bold;
-  margin-top: 10px;
+  /* font-weight: bold; */
+  margin-top: 5px;
 }
 
 @media (min-width: 768px) {

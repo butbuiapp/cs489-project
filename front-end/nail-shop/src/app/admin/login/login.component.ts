@@ -1,7 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../service/auth.service';
+import { LoginRequestDto } from '../../model/login.model';
 
 @Component({
   selector: 'app-login',
@@ -11,11 +13,13 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
-
   loginForm!: FormGroup;
+
+  errorMessage: string | null = null;
 
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
+  private authService = inject(AuthService);
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -25,14 +29,22 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    this.errorMessage = null;
     if (this.loginForm.valid) {
-      const phoneNumber = this.loginForm.value.phoneNumber;
-      const password = this.loginForm.value.password;
-      console.log('Login attempt with:', phoneNumber, password);
-      // Your login logic here, like an API call
-      this.router.navigate(['./admin/services']);
+      const loginRequest: LoginRequestDto = this.loginForm.value;
+      this.authService.adminLogin(loginRequest).subscribe(
+        (response) => {
+          this.authService.storeLoginInfo(response);
+          this.router.navigate(['./admin/appointments']);
+        },
+        (error) => {
+          if (error.error) {
+            this.errorMessage = error.error;            
+          }
+        }
+      );    
     } else {
-      alert('Please fill out the form correctly');
+      this.errorMessage = 'Input is invalid.';
     }
   }
 

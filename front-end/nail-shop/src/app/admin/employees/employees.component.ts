@@ -42,7 +42,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   onAdded() {
-    this.isAddingEmployee = false;
+    this.onClose();
     this.loadEmployees(); // Refresh the list
   }
 

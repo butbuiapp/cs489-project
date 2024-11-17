@@ -29,4 +29,5 @@ public class AuthController {
         LoginResponseDto loginResponseDto = authService.login(RoleEnum.CUSTOMER, req);
         return ResponseEntity.ok(loginResponseDto);
     }
+
 }

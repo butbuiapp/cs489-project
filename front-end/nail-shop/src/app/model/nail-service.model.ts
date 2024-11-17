@@ -1,7 +1,7 @@
 export interface NailService {
-  id: string;
+  id: number;
   name: string;
-  price: string;
-  duration: string;
+  price: number;
+  duration: number;
   description: string;
 }

@@ -37,7 +37,7 @@ export class CustomerAppointmentsComponent implements OnInit {
       this.customerId = Number(this.activatedRoute.snapshot.paramMap.get('customerId'));
 
       // get customer's appointments
-      this.appointmentService.getAppointmentsByCustomer(this.customerId).subscribe(
+      this.appointmentService.getAppointmentsByCustomerId(this.customerId).subscribe(
         (response) => {
           this.appointments = response;
         },

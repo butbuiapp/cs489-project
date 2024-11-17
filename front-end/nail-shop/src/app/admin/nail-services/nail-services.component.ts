@@ -24,12 +24,11 @@ export class NailServicesComponent implements OnInit {
   }
 
   loadNailServices() {
-    this.nailServiceService.nailServices.subscribe(
+    this.nailServiceService.getNailServices().subscribe(
       (response) => {
         this.nailServices = response;
       },
       (error) => {
-        console.error('Error fetching nail services:', error);
         this.errorMessage = 'Failed to load services.'
       }
     );
@@ -45,7 +44,8 @@ export class NailServicesComponent implements OnInit {
   }
 
   onServiceAdded() {
-    this.isAddingService = false;
+    this.onCloseAddService();
+
     this.loadNailServices(); // Refresh the list of services
   }
 
@@ -54,7 +54,7 @@ export class NailServicesComponent implements OnInit {
     this.isAddingService = true; // Show the form with the current service data
   }
 
-  onDeleteService(serviceId: string) {
+  onDeleteService(serviceId: number) {
     if (confirm('Are you sure you want to delete this service?')) {
       this.nailServiceService.deleteService(serviceId).subscribe(
         () => {

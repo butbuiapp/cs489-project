@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomerService } from '../../service/customer.service';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-customer-profile',
@@ -14,8 +15,11 @@ export class CustomerProfileComponent implements OnInit {
   errorMessage: string | null = null;
   infoMessage: string | null = null;
   customerForm! : FormGroup;
+  phoneNumber : string = "";
+  customerId : number = 0;
   private formBuilder = inject(FormBuilder);
   private customerService = inject(CustomerService);
+  private authService = inject(AuthService);
 
   ngOnInit(): void {
     this.customerForm = this.formBuilder.group({
@@ -25,6 +29,21 @@ export class CustomerProfileComponent implements OnInit {
       email: ['', [Validators.email]],
       dob: ['', []],
     });
+
+    // get user profile
+    this.phoneNumber = this.authService.getLoggedInUsername();
+    
+    this.customerService.searchCustomerByPhone(this.phoneNumber).subscribe(
+      (response) => {
+        this.customerForm.patchValue(response);
+        this.customerId = response.id;
+      },
+      (error) => {
+        if (error.error) {
+          this.errorMessage = error.error;
+        }
+      }
+    );
   }
 
   onSubmit() {
@@ -32,10 +51,9 @@ export class CustomerProfileComponent implements OnInit {
     if (this.customerForm.valid) {
       const customer = this.customerForm.value;
       // save customer
-      this.customerService.createCustomer(customer).subscribe(
+      this.customerService.updateCustomer(this.customerId, customer).subscribe(
         (response) => {
-          this.infoMessage = response;
-          this.customerForm.reset();
+          this.infoMessage = response.message;
         },
         (error) => {
           if (error.error) {

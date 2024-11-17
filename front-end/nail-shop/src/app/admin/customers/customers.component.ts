@@ -53,7 +53,7 @@ export class CustomersComponent implements OnInit {
           this.customers.push(response);
         },
         (error) => {
-          this.errorMessage = "Failed to load customers.";
+          this.errorMessage = error.error;
         }
       );
     } else {

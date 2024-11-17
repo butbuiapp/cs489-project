@@ -15,7 +15,7 @@ export class NailServiceService {
     
   }
 
-  get nailServices() : Observable<any> {
+  getNailServices() : Observable<any> {
     return this.http.get<any>(this.apiUrl);
   }
 
@@ -23,11 +23,11 @@ export class NailServiceService {
     return this.http.post<NailService>(this.apiUrl, service);
   }
 
-  updateService(id: string, nailService: NailService): Observable<NailService> {
+  updateService(id: number, nailService: NailService): Observable<NailService> {
     return this.http.put<NailService>(`${this.apiUrl}/${id}`, nailService);
   }
 
-  deleteService(id: string): Observable<void> {
+  deleteService(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

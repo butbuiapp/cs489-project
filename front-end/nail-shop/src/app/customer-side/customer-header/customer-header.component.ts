@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 
@@ -9,9 +9,15 @@ import { Router } from '@angular/router';
   templateUrl: './customer-header.component.html',
   styleUrl: './customer-header.component.css'
 })
-export class CustomerHeaderComponent {
+export class CustomerHeaderComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
+
+  loginUser: string | null = null;
+
+  ngOnInit(): void {
+    this.loginUser = this.authService.getLoggedInUser();
+  }
 
   logout() {
     this.authService.logout();

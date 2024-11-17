@@ -24,7 +24,7 @@ h2 {
 
 label {
   display: block;
-  font-weight: bold;
+  /* font-weight: bold; */
   margin-top: 10px;
 }
 

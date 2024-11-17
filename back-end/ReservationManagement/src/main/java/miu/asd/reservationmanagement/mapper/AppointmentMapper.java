@@ -12,6 +12,7 @@ public interface AppointmentMapper {
     AppointmentMapper MAPPER = Mappers.getMapper(AppointmentMapper.class);
 
     @Mapping(source = "technician.role.role", target = "technician.role")
+    @Mapping(source = "status", target = "status")
     AppointmentResponseDto entityToDto(Appointment appointment);
     Appointment dtoToEntity(AppointmentRequestDto appointmentRequestDto);
 }

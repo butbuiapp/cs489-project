@@ -2,7 +2,7 @@ package miu.asd.reservationmanagement.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import miu.asd.reservationmanagement.common.UserStatusEnum;
-import miu.asd.reservationmanagement.configuration.SecurityConfig;
+import miu.asd.reservationmanagement.config.ApplicationConfig;
 import miu.asd.reservationmanagement.dto.request.ChangePasswordRequestDto;
 import miu.asd.reservationmanagement.dto.request.EmployeeRequestDto;
 import miu.asd.reservationmanagement.dto.response.EmployeeResponseDto;
@@ -15,6 +15,7 @@ import miu.asd.reservationmanagement.model.Role;
 import miu.asd.reservationmanagement.repository.EmployeeRepository;
 import miu.asd.reservationmanagement.repository.RoleRepository;
 import miu.asd.reservationmanagement.service.EmployeeService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final RoleRepository roleRepository;
-    private final SecurityConfig securityConfig;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void saveEmployee(EmployeeRequestDto employeeRequestDto) {
@@ -41,7 +42,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = EmployeeMapper.MAPPER.dtoToEntity(employeeRequestDto);
         employee.setStatus(UserStatusEnum.ACTIVE);
         // encode password
-        employee.setPassword(securityConfig.passwordEncoder().encode(employeeRequestDto.getPassword()));
+        employee.setPassword(passwordEncoder.encode(employeeRequestDto.getPassword()));
         // get role
         Role role = roleRepository.findByRole(employeeRequestDto.getRole());
         employee.setRole(role);
@@ -113,12 +114,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         // check old password
-        if (!securityConfig.passwordEncoder().matches(dto.getOldPassword(), employee.getPassword())) {
+        if (!passwordEncoder.matches(dto.getOldPassword(), employee.getPassword())) {
             throw new InvalidPasswordException("The old password is incorrect.");
         }
 
         // save new password
-        employee.setPassword(securityConfig.passwordEncoder().encode(dto.getNewPassword()));
+        employee.setPassword(passwordEncoder.encode(dto.getNewPassword()));
         employeeRepository.save(employee);
     }
 

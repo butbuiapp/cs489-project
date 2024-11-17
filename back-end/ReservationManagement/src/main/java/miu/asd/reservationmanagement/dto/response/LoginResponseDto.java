@@ -1,12 +1,11 @@
 package miu.asd.reservationmanagement.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
+@AllArgsConstructor
 public class LoginResponseDto {
-  private final String tokenType = "Bearer";
   private String accessToken;
-  private Long expiresIn;
 }

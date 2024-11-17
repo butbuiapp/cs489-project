@@ -1,0 +1,9 @@
+.form-row {
+  display: flex;
+  gap: 10px; /* Adjust the gap as needed */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}

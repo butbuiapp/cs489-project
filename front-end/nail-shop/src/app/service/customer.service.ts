@@ -22,14 +22,18 @@ export class CustomerService {
   }
 
   createCustomer(customer: Customer) : Observable<any> {
-    return this.http.post<Customer>(this.apiUrl, customer);
+    return this.http.post<Customer>(`${this.apiUrl}/register`, customer);
   }
 
-  changePassword(id: number, changePasswordDto: ChangePasswordDto): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/change-password/${id}`, changePasswordDto);
+  changePassword(phoneNumber: string, changePasswordDto: ChangePasswordDto): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/change-password/${phoneNumber}`, changePasswordDto);
   }
 
   updateCustomer(id: number, customer: Customer) : Observable<any> {
     return this.http.put<Customer>(`${this.apiUrl}/${id}`, customer);
+  }
+
+  getCustomerById(id: number) : Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 }

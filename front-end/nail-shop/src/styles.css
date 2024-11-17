@@ -9,6 +9,16 @@ body, input {
   border: 1px solid #f61491 !important;
 }
 
-h3 {
+h2, h3 {
   color: #f61491;
+}
+
+th {
+  background-color: #ffb7ce !important;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
 }

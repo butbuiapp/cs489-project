@@ -35,7 +35,7 @@ export class CustomerRegistrationComponent implements OnInit {
       // save customer
       this.customerService.createCustomer(customer).subscribe(
         (response) => {
-          this.infoMessage = response;
+          this.infoMessage = response.message;
           this.customerForm.reset();
         },
         (error) => {
@@ -44,7 +44,7 @@ export class CustomerRegistrationComponent implements OnInit {
           }         
         }
       );
-    }  else {
+    } else {
       this.errorMessage = 'Input is invalid.';
     }
   }
