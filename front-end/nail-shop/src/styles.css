@@ -2,6 +2,7 @@
 body, input {
   font-size: 1rem;
   line-height: 2.15;
+  background-color: #faecf0;
 }
 
 .btn-primary {
@@ -26,4 +27,5 @@ label {
 section {
   height: 100vh;
   margin-top: 1rem;
+  padding-left: 3rem;
 }
