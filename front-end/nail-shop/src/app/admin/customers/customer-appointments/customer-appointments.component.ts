@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppointmentService } from '../../../service/appointment.service';
 import { CommonModule } from '@angular/common';
-import { Appointment } from '../../../model/appointment.model';
+import { AppointmentResponse } from '../../../model/appointment.model';
 import { AppointmentComponent } from '../../appointments/appointment/appointment.component';
 
 @Component({
@@ -14,7 +14,7 @@ import { AppointmentComponent } from '../../appointments/appointment/appointment
 })
 export class CustomerAppointmentsComponent implements OnInit {
   customerId: number | null = null;
-  appointments: Appointment[] = [];
+  appointments: AppointmentResponse[] = [];
   errorMessage: string | null = null;
 
   firstName: string = '';
@@ -53,7 +53,7 @@ export class CustomerAppointmentsComponent implements OnInit {
     this.showInvoiceMap[appointmentId] = !this.showInvoiceMap[appointmentId];
   }
 
-  trackByAppointmentId(index: number, appointment: Appointment): number {
+  trackByAppointmentId(index: number, appointment: AppointmentResponse): number {
     return appointment.id;
   }
 }

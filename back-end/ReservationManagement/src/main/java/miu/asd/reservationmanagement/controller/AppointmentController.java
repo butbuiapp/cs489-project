@@ -26,6 +26,14 @@ public class AppointmentController {
         return ResponseEntity.ok().body(Map.of("message", "Appointment created successfully"));
     }
 
+    @PutMapping("{appointmentId}")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
+    public ResponseEntity<?> updateAppointment(@PathVariable Long appointmentId,
+                                               @RequestBody AppointmentRequestDto appointmentRequestDto) {
+        appointmentService.updateAppointment(appointmentId, appointmentRequestDto);
+        return ResponseEntity.ok().body(Map.of("message", "Appointment updated successfully"));
+    }
+
     @GetMapping("/customer/{customerId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
     public ResponseEntity<?> getAppointmentsByCustomerId(@PathVariable Long customerId) {

@@ -14,12 +14,12 @@
     </span>
   </p>
   <p><strong>Notes:</strong> {{ appointment().notes }}</p>
-  <div>
+  <div class="text-center">
     <button class="btn btn-primary" (click)="toggleInvoice(appointment().id)">
       {{ showInvoiceMap[appointment().id] ? 'Hide Invoice' : 'View Invoice' }}
     </button>
     @if (appointment().status == AppointmentStatusEnum.BOOKED) {
-        <button class="btn btn-primary ms-2">Update Appointment</button>
+        <button class="btn btn-primary ms-2" (click)="updateAppointment()">Update Appointment</button>
         <button class="btn btn-secondary ms-2" (click)="cancelAppointment()">Cancel Appointment</button>
     }
   </div>

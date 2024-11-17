@@ -22,7 +22,7 @@ export interface AppointmentRequest {
 }
 
 // Define AppointmentResponseDto interface
-export interface Appointment {
+export interface AppointmentResponse {
   id: number;
   date: string;
   time: string;

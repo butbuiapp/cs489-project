@@ -22,3 +22,8 @@ label {
   margin-top: 10px;
   font-weight: 600;
 }
+
+section {
+  height: 100vh;
+  margin-top: 1rem;
+}

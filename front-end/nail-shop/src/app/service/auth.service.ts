@@ -43,26 +43,17 @@ export class AuthService {
     }   
   }
 
-  getDecodedToken(token: string): { username: string } | null {
+  getDecodedToken(token: string): { username: string, role: string } | null {
     try {
       const decodedToken: any = jwtDecode(token);
       return {
-        username: decodedToken.sub
+        username: decodedToken.sub,
+        role: decodedToken.authorities
       };
     } catch (error) {
       console.error('Error decoding token', error);
       return null;
     }
-  }
-
-  isTokenExpired(token: string): boolean {
-    const decodedToken = jwtDecode(token);
-    if (!decodedToken || !decodedToken.exp) return true;
-  
-    const expirationDate = new Date(0);
-    expirationDate.setUTCSeconds(decodedToken.exp);
-  
-    return expirationDate < new Date();
   }
   
   getLoggedInUser() {
@@ -70,7 +61,11 @@ export class AuthService {
   }
 
   getLoggedInUsername() {
-    return this.loginDataSubject.value.username;
+    return this.loginDataSubject.value?.username;
+  }
+
+  getLoggedInRole() {
+    return this.loginDataSubject.value?.role;
   }
 
   logout() {

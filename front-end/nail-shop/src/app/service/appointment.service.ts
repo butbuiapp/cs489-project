@@ -32,4 +32,8 @@ export class AppointmentService {
     return this.http.get<any>(`${this.apiUrl}/${appointmentId}/cancel`);
   }
 
+  updateAppointment(appointmentId: number, appointment: AppointmentRequest) : Observable<any> {
+    return this.http.put<AppointmentRequest>(`${this.apiUrl}/${appointmentId}`, appointment);
+  }
+
 }

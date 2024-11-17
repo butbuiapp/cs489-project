@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Appointment } from '../../model/appointment.model';
+import { AppointmentResponse } from '../../model/appointment.model';
 import { AppointmentService } from '../../service/appointment.service';
 import { CommonModule } from '@angular/common';
 import { AppointmentDetailComponent } from './appointment-detail/appointment-detail.component';
@@ -18,29 +18,34 @@ export class MyAppointmentsComponent implements OnInit {
   private authService = inject(AuthService);
 
   phoneNumber : string = "";
-  appointments: Appointment[] = [];
+  appointments: AppointmentResponse[] = [];
   errorMessage: string | null = null;
 
   ngOnInit(): void {
-      this.phoneNumber = this.authService.getLoggedInUsername();
-
-      this.appointmentService.getAppointmentsByCustomerPhone(this.phoneNumber).subscribe(
-        (response) => {
-          this.appointments = response;
-        },
-        (error) => {
-          if (error.error) {
-            this.errorMessage = error.error;
-          }          
-        }
-      );
+    this.getAppointmentsByCustomerPhone();
   }
 
-  trackByAppointmentId(index: number, appointment: Appointment): number {
+  getAppointmentsByCustomerPhone() {
+    this.phoneNumber = this.authService.getLoggedInUsername();
+
+    this.appointmentService.getAppointmentsByCustomerPhone(this.phoneNumber).subscribe(
+      (response) => {
+        this.appointments = response;
+      },
+      (error) => {
+        if (error.error) {
+          this.errorMessage = error.error;
+        }          
+      }
+    );
+  }
+
+  trackByAppointmentId(index: number, appointment: AppointmentResponse): number {
     return appointment.id;
   }
 
   onCancelCompleted(appointmentId: number) {
-    this.appointments = this.appointments.filter(app => app.id !== appointmentId);
+    this.getAppointmentsByCustomerPhone();
+    //this.appointments = this.appointments.filter(app => app.id !== appointmentId);
   }
 }

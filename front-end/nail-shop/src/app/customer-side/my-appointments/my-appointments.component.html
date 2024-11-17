@@ -1,8 +1,6 @@
-<section class="d-flex justify-content-center align-items-center w-100">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-10 text-black">
-        <h3 class="fw-normal mb-5" style="letter-spacing: 1px;">My Appointments</h3>
+<section>
+    <div class="col-md-10">
+      <h3 class="fw-normal mb-5" style="letter-spacing: 1px;">My Appointments</h3>
 
     <!-- Error message display -->
     @if (errorMessage) {
@@ -14,7 +12,7 @@
     <div class="appointments-container">
       <!-- Loop through each appointment -->
       <div *ngIf="appointments?.length">
-        <div *ngFor="let appointment of appointments; trackBy: trackByAppointmentId" class="appointment-card m-3">
+        <div *ngFor="let appointment of appointments; trackBy: trackByAppointmentId" class="appointment-card mb-3 me-3">
           <app-appointment-detail [appointment]="appointment" (cancel)="onCancelCompleted($event)"></app-appointment-detail>
         </div>
       </div>
@@ -25,6 +23,4 @@
       </div>
     </div>
   </div>
-</div>
-</div>
 </section>

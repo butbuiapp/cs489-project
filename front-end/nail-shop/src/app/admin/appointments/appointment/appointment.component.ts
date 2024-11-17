@@ -1,6 +1,6 @@
 import { Component, input, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Appointment } from '../../../model/appointment.model';
+import { AppointmentResponse } from '../../../model/appointment.model';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -12,7 +12,7 @@ import { DatePipe } from '@angular/common';
 })
 export class AppointmentComponent {
   // @Input() appointment: Appointment | null = null;
-  appointment = input.required<Appointment>();
+  appointment = input.required<AppointmentResponse>();
 
   showInvoiceMap: { [appointmentId: number]: boolean } = {};
 

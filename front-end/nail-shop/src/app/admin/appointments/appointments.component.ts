@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Appointment } from '../../model/appointment.model';
+import { AppointmentResponse } from '../../model/appointment.model';
 import { AppointmentService } from '../../service/appointment.service';
 import { CommonModule } from '@angular/common';
 import { AppointmentComponent } from './appointment/appointment.component';
@@ -13,7 +13,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './appointments.component.css'
 })
 export class AppointmentsComponent implements OnInit {
-  appointments: Appointment[] = [];
+  appointments: AppointmentResponse[] = [];
   errorMessage: string | null = null;
   appointmentDate = new FormControl(new Date());
 
@@ -42,7 +42,7 @@ export class AppointmentsComponent implements OnInit {
   }
 
 
-  trackByAppointmentId(index: number, appointment: Appointment): number {
+  trackByAppointmentId(index: number, appointment: AppointmentResponse): number {
     return appointment.id;
   }
 }

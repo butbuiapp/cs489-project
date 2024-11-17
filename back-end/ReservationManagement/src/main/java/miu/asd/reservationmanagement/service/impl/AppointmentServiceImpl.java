@@ -11,9 +11,11 @@ import miu.asd.reservationmanagement.exception.NotFoundException;
 import miu.asd.reservationmanagement.mapper.AppointmentMapper;
 import miu.asd.reservationmanagement.model.Appointment;
 import miu.asd.reservationmanagement.model.Customer;
+import miu.asd.reservationmanagement.model.Employee;
 import miu.asd.reservationmanagement.model.Invoice;
 import miu.asd.reservationmanagement.repository.AppointmentRepository;
 import miu.asd.reservationmanagement.repository.CustomerRepository;
+import miu.asd.reservationmanagement.repository.EmployeeRepository;
 import miu.asd.reservationmanagement.service.AppointmentService;
 import miu.asd.reservationmanagement.service.CustomerService;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final CustomerRepository customerRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Override
     @Transactional
@@ -53,7 +56,20 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public void updateAppointment(Long id, AppointmentRequestDto appointmentRequestDto) {
+        Appointment appointment = AppointmentMapper.MAPPER.dtoToEntity(appointmentRequestDto);
 
+        Appointment existingAppointment = findById(id);
+        existingAppointment.setDate(appointmentRequestDto.getDate());
+        existingAppointment.setTime(appointmentRequestDto.getTime());
+        Employee employee = employeeRepository.findById(appointmentRequestDto.getTechnician().getId()).
+                orElseThrow(() -> new NotFoundException("Technician not found"));
+        existingAppointment.setTechnician(employee);
+        existingAppointment.setNotes(appointmentRequestDto.getNotes());
+
+        // update service
+        Invoice invoice = existingAppointment.getInvoice();
+        existingAppointment.setInvoice(appointment.getInvoice());
+        appointmentRepository.save(existingAppointment);
     }
 
     @Override

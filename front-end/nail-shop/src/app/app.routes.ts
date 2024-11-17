@@ -14,6 +14,7 @@ import { MyAppointmentsComponent } from './customer-side/my-appointments/my-appo
 import { CustomerChangePasswordComponent } from './customer-side/customer-change-password/customer-change-password.component';
 import { CustomerProfileComponent } from './customer-side/customer-profile/customer-profile.component';
 import { NewAppointmentComponent } from './customer-side/my-appointments/new-appointment/new-appointment.component';
+import { roleGuard } from './service/auth-guard';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,8 @@ export const routes: Routes = [
     path: 'admin', 
     component: AdminCardComponent,
     title: "Admin Page",
+    canActivate: [roleGuard], // Apply role guard
+    data: { role: 'ROLE_MANAGER' }, // Expected role for manager
     children: [
       {
         path: "appointments",
@@ -66,6 +69,8 @@ export const routes: Routes = [
   {
     path: 'customer', 
     component: CustomerCardComponent,
+    canActivate: [roleGuard], // Apply role guard
+    data: { role: 'ROLE_CUSTOMER' }, // Expected role for customer
     children: [
       {
         path: 'my-appointments', 
