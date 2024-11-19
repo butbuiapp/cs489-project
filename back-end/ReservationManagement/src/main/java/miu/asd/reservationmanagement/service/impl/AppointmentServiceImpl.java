@@ -67,7 +67,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         existingAppointment.setNotes(appointmentRequestDto.getNotes());
 
         // update service
-        Invoice invoice = existingAppointment.getInvoice();
         existingAppointment.setInvoice(appointment.getInvoice());
         appointmentRepository.save(existingAppointment);
     }
@@ -77,11 +76,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = findById(id);
         appointment.setStatus(AppointmentStatusEnum.CANCELLED);
         appointmentRepository.save(appointment);
-    }
-
-    @Override
-    public List<AppointmentResponseDto> getAppointmentsByStatus(AppointmentStatusEnum status) {
-        return null;
     }
 
     @Override
@@ -98,11 +92,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<AppointmentResponseDto> appointmentResponseDtos = appointments.stream().map(
                 AppointmentMapper.MAPPER::entityToDto).collect(Collectors.toList());
         return appointmentResponseDtos;
-    }
-
-    @Override
-    public List<AppointmentResponseDto> getAppointmentsByTechnician(Long technicianId) {
-        return null;
     }
 
     @Override

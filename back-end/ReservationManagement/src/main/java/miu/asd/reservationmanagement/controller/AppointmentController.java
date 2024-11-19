@@ -1,11 +1,13 @@
 package miu.asd.reservationmanagement.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import miu.asd.reservationmanagement.common.Constant;
 import miu.asd.reservationmanagement.dto.request.AppointmentRequestDto;
 import miu.asd.reservationmanagement.dto.request.AppointmentSearchRequestDto;
 import miu.asd.reservationmanagement.dto.response.AppointmentResponseDto;
 import miu.asd.reservationmanagement.service.AppointmentService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,15 +23,17 @@ public class AppointmentController {
 
     @PostMapping
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<?> createAppointment(@RequestBody AppointmentRequestDto appointmentRequestDto) {
+    public ResponseEntity<?> createAppointment(
+            @Valid @RequestBody AppointmentRequestDto appointmentRequestDto) {
         appointmentService.saveAppointment(appointmentRequestDto);
-        return ResponseEntity.ok().body(Map.of("message", "Appointment created successfully"));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("message", "Appointment created successfully"));
     }
 
     @PutMapping("{appointmentId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
     public ResponseEntity<?> updateAppointment(@PathVariable Long appointmentId,
-                                               @RequestBody AppointmentRequestDto appointmentRequestDto) {
+                                               @Valid @RequestBody AppointmentRequestDto appointmentRequestDto) {
         appointmentService.updateAppointment(appointmentId, appointmentRequestDto);
         return ResponseEntity.ok().body(Map.of("message", "Appointment updated successfully"));
     }
@@ -62,5 +66,11 @@ public class AppointmentController {
     public ResponseEntity<?> cancelAppointment(@PathVariable Long appointmentId) {
         appointmentService.cancelAppointment(appointmentId);
         return ResponseEntity.ok().body(Map.of("message", "Appointment cancelled successfully"));
+    }
+
+    @GetMapping("/{appointmentId}")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
+    public ResponseEntity<?> getAppointmentById(@PathVariable Long appointmentId) {
+        return ResponseEntity.ok().body(appointmentService.getAppointmentById(appointmentId));
     }
 }

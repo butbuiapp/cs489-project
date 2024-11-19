@@ -24,15 +24,22 @@ public class Employee implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(length = 50)
     private String firstName;
+
     @Column(length = 50)
+
     private String lastName;
+
     @Column(length = 15)
     private String phoneNumber;
+
     @Column(length = 50)
     private String email;
+
     private LocalDate dob;
+
     @Column(length = 100)
     private String password;
 

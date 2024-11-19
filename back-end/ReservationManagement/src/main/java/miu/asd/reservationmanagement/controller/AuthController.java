@@ -1,5 +1,6 @@
 package miu.asd.reservationmanagement.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import miu.asd.reservationmanagement.common.Constant;
 import miu.asd.reservationmanagement.common.RoleEnum;
@@ -19,13 +20,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/admin/login")
-    public ResponseEntity<?> loginAdmin(@RequestBody LoginRequestDto req) {
+    public ResponseEntity<?> loginAdmin(@Valid @RequestBody LoginRequestDto req) {
         LoginResponseDto loginResponseDto = authService.login(RoleEnum.TECHNICIAN, req);
         return ResponseEntity.ok(loginResponseDto);
     }
 
     @PostMapping("/customer/login")
-    public ResponseEntity<?> loginCustomer(@RequestBody LoginRequestDto req) {
+    public ResponseEntity<?> loginCustomer(@Valid @RequestBody LoginRequestDto req) {
         LoginResponseDto loginResponseDto = authService.login(RoleEnum.CUSTOMER, req);
         return ResponseEntity.ok(loginResponseDto);
     }

@@ -1,11 +1,13 @@
 package miu.asd.reservationmanagement.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import miu.asd.reservationmanagement.common.Constant;
 import miu.asd.reservationmanagement.dto.request.ChangePasswordRequestDto;
 import miu.asd.reservationmanagement.dto.request.EmployeeRequestDto;
 import miu.asd.reservationmanagement.dto.response.EmployeeResponseDto;
 import miu.asd.reservationmanagement.service.EmployeeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +23,15 @@ public class EmployeeController {
 
     @PostMapping
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<?> createEmployee(@RequestBody EmployeeRequestDto employeeRequestDto) {
+    public ResponseEntity<?> createEmployee(@Valid @RequestBody EmployeeRequestDto employeeRequestDto) {
         employeeService.saveEmployee(employeeRequestDto);
-        return ResponseEntity.ok().body(Map.of("message", "Employee created successfully"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Employee created successfully"));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('MANAGER', 'TECHNICIAN')")
-    public ResponseEntity<?> updateEmployee(@PathVariable Long id, @RequestBody EmployeeRequestDto employeeRequestDto) {
+    public ResponseEntity<?> updateEmployee(@PathVariable Long id,
+                                            @Valid @RequestBody EmployeeRequestDto employeeRequestDto) {
         employeeService.updateEmployee(id, employeeRequestDto);
         return ResponseEntity.ok().body(Map.of("message", "Employee updated successfully"));
     }
@@ -58,7 +61,7 @@ public class EmployeeController {
     @PreAuthorize("hasRole('TECHNICIAN')")
     public ResponseEntity<?> changePassword(
             @PathVariable Long id,
-            @RequestBody ChangePasswordRequestDto changePasswordRequestDto) {
+            @Valid @RequestBody ChangePasswordRequestDto changePasswordRequestDto) {
         employeeService.changePassword(id, changePasswordRequestDto);
         return ResponseEntity.ok().body(Map.of("message", "Password changed successfully"));
     }

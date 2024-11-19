@@ -16,4 +16,5 @@ public class CustomerResponseDto {
     private String email;
     private LocalDate dob;
     private UserStatusEnum status;
+    private Integer earnedPoint;
 }

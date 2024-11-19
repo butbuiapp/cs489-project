@@ -1,11 +1,13 @@
 package miu.asd.reservationmanagement.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import miu.asd.reservationmanagement.common.Constant;
 import miu.asd.reservationmanagement.dto.request.ChangePasswordRequestDto;
 import miu.asd.reservationmanagement.dto.request.CustomerRequestDto;
 import miu.asd.reservationmanagement.dto.response.CustomerResponseDto;
 import miu.asd.reservationmanagement.service.CustomerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +21,15 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping("register")
-    public ResponseEntity<?> createCustomer(@RequestBody CustomerRequestDto customerRequestDto) {
+    public ResponseEntity<?> createCustomer(@Valid @RequestBody CustomerRequestDto customerRequestDto) {
         customerService.saveCustomer(customerRequestDto);
-        return ResponseEntity.ok().body(Map.of("message", "Customer created successfully"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Customer created successfully"));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<?> updateCustomer(@PathVariable Long id, @RequestBody CustomerRequestDto customerRequestDto) {
+    public ResponseEntity<?> updateCustomer(@PathVariable Long id,
+                                            @Valid @RequestBody CustomerRequestDto customerRequestDto) {
         customerService.updateCustomer(id, customerRequestDto);
         return ResponseEntity.ok().body(Map.of("message", "Customer updated successfully"));
     }
@@ -72,7 +75,7 @@ public class CustomerController {
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<?> changePasswordByPhone(
             @PathVariable String phoneNumber,
-            @RequestBody ChangePasswordRequestDto changePasswordRequestDto) {
+            @Valid @RequestBody ChangePasswordRequestDto changePasswordRequestDto) {
         customerService.changePassword(phoneNumber, changePasswordRequestDto);
         return ResponseEntity.ok().body(Map.of("message", "Password changed successfully"));
     }

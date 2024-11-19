@@ -1,9 +1,11 @@
 package miu.asd.reservationmanagement.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import miu.asd.reservationmanagement.common.Constant;
 import miu.asd.reservationmanagement.model.NailService;
 import miu.asd.reservationmanagement.service.NailServiceService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +21,15 @@ public class NailServiceController {
 
     @PostMapping
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<?> createService(@RequestBody NailService nailService) {
+    public ResponseEntity<?> createService(@Valid @RequestBody NailService nailService) {
         NailService createdService = nailServiceService.saveService(nailService);
-        return ResponseEntity.ok().body(createdService);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdService);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('MANAGER')")
-    public ResponseEntity<?> updateService(@PathVariable Integer id, @RequestBody NailService nailService) {
+    public ResponseEntity<?> updateService(@PathVariable Integer id,
+                                           @Valid @RequestBody NailService nailService) {
         nailServiceService.updateService(id, nailService);
         return ResponseEntity.ok().body(Map.of("message", "Nail service updated successfully"));
     }
