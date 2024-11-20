@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 @RequiredArgsConstructor
 public class ReservationManagementApplication {
-	private final RoleRepository roleRepository;
-	private final EmployeeService employeeService;
+//	private final RoleRepository roleRepository;
+//	private final EmployeeService employeeService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ReservationManagementApplication.class, args);

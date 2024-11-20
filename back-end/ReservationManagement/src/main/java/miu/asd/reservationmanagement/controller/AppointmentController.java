@@ -73,4 +73,11 @@ public class AppointmentController {
     public ResponseEntity<?> getAppointmentById(@PathVariable Long appointmentId) {
         return ResponseEntity.ok().body(appointmentService.getAppointmentById(appointmentId));
     }
+
+    @GetMapping("/{appointmentId}/complete")
+    @PreAuthorize("hasRole('MANAGER')")
+    public ResponseEntity<?> completeAppointment(@PathVariable Long appointmentId) {
+        appointmentService.completeAppointment(appointmentId);
+        return ResponseEntity.ok().body(Map.of("message", "Appointment completed successfully"));
+    }
 }

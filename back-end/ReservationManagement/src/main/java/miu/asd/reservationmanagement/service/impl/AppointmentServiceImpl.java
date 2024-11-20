@@ -9,13 +9,11 @@ import miu.asd.reservationmanagement.dto.response.AppointmentResponseDto;
 import miu.asd.reservationmanagement.dto.request.AppointmentSearchRequestDto;
 import miu.asd.reservationmanagement.exception.NotFoundException;
 import miu.asd.reservationmanagement.mapper.AppointmentMapper;
-import miu.asd.reservationmanagement.model.Appointment;
-import miu.asd.reservationmanagement.model.Customer;
-import miu.asd.reservationmanagement.model.Employee;
-import miu.asd.reservationmanagement.model.Invoice;
+import miu.asd.reservationmanagement.model.*;
 import miu.asd.reservationmanagement.repository.AppointmentRepository;
 import miu.asd.reservationmanagement.repository.CustomerRepository;
 import miu.asd.reservationmanagement.repository.EmployeeRepository;
+import miu.asd.reservationmanagement.repository.LoyaltyPointRepository;
 import miu.asd.reservationmanagement.service.AppointmentService;
 import miu.asd.reservationmanagement.service.CustomerService;
 import org.springframework.stereotype.Service;
@@ -31,6 +29,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final CustomerRepository customerRepository;
     private final EmployeeRepository employeeRepository;
+    private final LoyaltyPointRepository loyaltyPointRepository;
 
     @Override
     @Transactional
@@ -76,6 +75,37 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = findById(id);
         appointment.setStatus(AppointmentStatusEnum.CANCELLED);
         appointmentRepository.save(appointment);
+    }
+
+    @Override
+    @Transactional
+    public void completeAppointment(Long id) {
+        Appointment appointment = findById(id);
+        appointment.setStatus(AppointmentStatusEnum.DONE);
+        appointmentRepository.save(appointment);
+
+        // update earned point
+        Optional<LoyaltyPoint> optionalLoyaltyPoint =
+                loyaltyPointRepository.findByCustomerId(appointment.getCustomer().getId());
+        if (optionalLoyaltyPoint.isPresent()) {
+            LoyaltyPoint loyaltyPoint = optionalLoyaltyPoint.get();
+            // update
+            if (appointment.getInvoice() != null) {
+                Integer newPoint = loyaltyPoint.getEarnedPoint() +
+                        (int) appointment.getInvoice().getTotalAmount();
+                loyaltyPoint.setEarnedPoint(newPoint);
+                loyaltyPointRepository.save(loyaltyPoint);
+            }
+        } else {
+            // create
+            if (appointment.getInvoice() != null) {
+                LoyaltyPoint loyaltyPoint = LoyaltyPoint.builder()
+                        .earnedPoint((int) appointment.getInvoice().getTotalAmount())
+                        .customer(appointment.getCustomer())
+                        .build();
+                loyaltyPointRepository.save(loyaltyPoint);
+            }
+        }
     }
 
     @Override
