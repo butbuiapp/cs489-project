@@ -21,7 +21,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping("register")
-    public ResponseEntity<?> createCustomer(@Valid @RequestBody CustomerRequestDto customerRequestDto) {
+    public ResponseEntity<Map<String, String>> createCustomer(@Valid @RequestBody CustomerRequestDto customerRequestDto) {
         customerService.saveCustomer(customerRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Customer created successfully"));
     }
@@ -61,15 +61,6 @@ public class CustomerController {
         customerService.deleteCustomerById(id);
         return ResponseEntity.ok().body(Map.of("message", "Customer deleted successfully"));
     }
-
-//    @PutMapping("/change-password/{id}")
-//    @PreAuthorize("hasRole('CUSTOMER')")
-//    public ResponseEntity<?> changePassword(
-//            @PathVariable Long id,
-//            @RequestBody ChangePasswordRequestDto changePasswordRequestDto) {
-//        customerService.changePassword(id, changePasswordRequestDto);
-//        return ResponseEntity.ok().body(Map.of("message", "Password changed successfully"));
-//    }
 
     @PutMapping("/change-password/{phoneNumber}")
     @PreAuthorize("hasRole('CUSTOMER')")
