@@ -7,15 +7,16 @@
         </div>
 
         <div class="card p-5 pt-3 pb-3 shadow" style="max-width: 400px; margin: auto;">
-          <!-- Error message display -->
-          @if (errorMessage) {
-            <div class="alert alert-danger">
-              {{ errorMessage }}
-            </div>
-          }
+          
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
             <h3 class="fw-normal mb-2" style="letter-spacing: 1px;">Log in</h3>
 
+            <!-- Error message display -->
+            @if (errorMessage) {
+              <div class="alert alert-danger">
+                {{ errorMessage }}
+              </div>
+            }
             <!-- Phone Number Field -->
             <div class="form-outline mb-4">
               <label for="phoneNumber">Phone number</label>

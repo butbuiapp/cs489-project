@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Constants } from "../common/constants";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { AppointmentRequest, AppointmentSearch } from "../model/appointment.model";
+import { AppointmentRequest, AppointmentResponse, AppointmentSearch } from "../model/appointment.model";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,10 @@ export class AppointmentService {
   private apiUrl = Constants.APPOINTMENT_URL;
 
   constructor (private http: HttpClient) {}
+
+  getAppointmentById(appointmentId: number) : Observable<AppointmentResponse> {
+    return this.http.get<any>(`${this.apiUrl}/${appointmentId}`);
+  }
 
   getAppointmentsByCustomerId(customerId: number) : Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/customer/${customerId}`);
@@ -30,6 +34,10 @@ export class AppointmentService {
 
   cancelAppointment(appointmentId: number) : Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${appointmentId}/cancel`);
+  }
+
+  completeAppointment(appointmentId: number) : Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${appointmentId}/complete`);
   }
 
   updateAppointment(appointmentId: number, appointment: AppointmentRequest) : Observable<any> {

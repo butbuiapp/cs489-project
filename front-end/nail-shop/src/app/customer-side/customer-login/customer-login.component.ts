@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { LoginRequestDto } from '../../model/login.model';
 import { AuthService } from '../../service/auth.service';
+import { getErrorMessage } from '../../common/constants';
 
 @Component({
   selector: 'app-customer-login',
@@ -37,9 +38,7 @@ export class CustomerLoginComponent implements OnInit {
           this.router.navigate(['./customer/my-appointments']);
         },
         (error) => {
-          if (error.error) {
-            this.errorMessage = error.error;            
-          }
+          this.errorMessage = getErrorMessage(error.error); 
         }
       );    
     } else {

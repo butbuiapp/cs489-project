@@ -3,6 +3,7 @@ import { type Employee } from '../../../model/employee.model';
 import { EmployeeService } from '../../../service/employee.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { getErrorMessage } from '../../../common/constants';
 
 @Component({
   selector: 'app-new-employee',
@@ -31,7 +32,7 @@ export class NewEmployeeComponent {
         phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
         email: ['', [Validators.email]],
         dob: ['', []],
-        password: ['', []],
+        password: ['xxxxxxxx', []],
         role: ['', Validators.required],
       });
       this.employeeForm.patchValue(this.editingEmployee);
@@ -61,7 +62,11 @@ export class NewEmployeeComponent {
             this.employeeAdded.emit();
           },
           (error) => {
-            this.errorMessage = 'Failed to update employee. Please try again later.';
+            if (error.error) {
+              this.errorMessage = getErrorMessage(error.error);
+            } else {
+              this.errorMessage = 'Failed to update employee. Please try again later.';
+            }
           }
         );
       } else {
@@ -72,10 +77,12 @@ export class NewEmployeeComponent {
           },
           (error) => {
             if (error.error) {
-              this.errorMessage = error.error;
+              this.errorMessage = Object.keys(error.error)
+                .map(key => error.error[key])
+                .join('<br>');
             } else {
               this.errorMessage = 'Failed to add employee. Please try again later.';
-            }            
+            }           
           }
         );
       }

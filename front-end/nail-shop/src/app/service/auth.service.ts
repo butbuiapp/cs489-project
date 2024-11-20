@@ -71,5 +71,6 @@ export class AuthService {
   logout() {
     localStorage.removeItem('authToken');
     this.loginDataSubject.next(null);
+    sessionStorage.removeItem('earnedPoint');
   }
 }

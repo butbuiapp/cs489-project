@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomerService } from '../../service/customer.service';
 import { AuthService } from '../../service/auth.service';
+import { getErrorMessage } from '../../common/constants';
 
 @Component({
   selector: 'app-customer-profile',
@@ -28,6 +29,7 @@ export class CustomerProfileComponent implements OnInit {
       phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       email: ['', [Validators.email]],
       dob: ['', []],
+      password: ['xxxxxxxx'],
     });
 
     // get user profile
@@ -57,7 +59,7 @@ export class CustomerProfileComponent implements OnInit {
         },
         (error) => {
           if (error.error) {
-            this.errorMessage = error.error;            
+            this.errorMessage = getErrorMessage(error.error);           
           }         
         }
       );

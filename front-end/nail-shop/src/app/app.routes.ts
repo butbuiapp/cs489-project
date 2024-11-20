@@ -3,7 +3,7 @@ import { LoginComponent } from './admin/login/login.component';
 import { AdminCardComponent } from './admin/shared/admin-card.component';
 import { NailServicesComponent } from './admin/nail-services/nail-services.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { AppointmentsComponent } from './admin/appointments/appointments.component';
+import { AppointmentsManagementComponent } from './admin/appointments/appointments-management.component';
 import { EmployeesComponent } from './admin/employees/employees.component';
 import { CustomersComponent } from './admin/customers/customers.component';
 import { CustomerAppointmentsComponent } from './admin/customers/customer-appointments/customer-appointments.component';
@@ -36,7 +36,7 @@ export const routes: Routes = [
     children: [
       {
         path: "appointments",
-        component: AppointmentsComponent
+        component: AppointmentsManagementComponent
       },
       {
         path: 'employees',

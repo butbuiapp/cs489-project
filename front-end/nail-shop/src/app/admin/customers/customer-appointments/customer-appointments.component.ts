@@ -4,6 +4,7 @@ import { AppointmentService } from '../../../service/appointment.service';
 import { CommonModule } from '@angular/common';
 import { AppointmentResponse } from '../../../model/appointment.model';
 import { AppointmentComponent } from '../../appointments/appointment/appointment.component';
+import { AppointmentStatusEnum } from '../../../model/appointment.model';
 
 @Component({
   selector: 'app-customer-appointments',
@@ -19,6 +20,7 @@ export class CustomerAppointmentsComponent implements OnInit {
 
   firstName: string = '';
   lastName: string = '';
+  isRead: boolean = true;
   
   private activatedRoute = inject(ActivatedRoute);
   private appointmentService = inject(AppointmentService);
@@ -55,5 +57,9 @@ export class CustomerAppointmentsComponent implements OnInit {
 
   trackByAppointmentId(index: number, appointment: AppointmentResponse): number {
     return appointment.id;
+  }
+
+  isBooked(status : AppointmentStatusEnum) {
+    return status === AppointmentStatusEnum.BOOKED;
   }
 }

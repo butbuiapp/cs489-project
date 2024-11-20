@@ -13,6 +13,8 @@ import { NewEmployeeComponent } from "./new-employee/new-employee.component";
 export class EmployeesComponent implements OnInit {
   employees : any[] = [];
   errorMessage : string | null = null;
+  inforMessage: string | null = null;
+
   isAddingEmployee: boolean = false;
   editingEmployee: Employee | null = null;
   private employeeService = inject(EmployeeService);
@@ -54,8 +56,9 @@ export class EmployeesComponent implements OnInit {
   onDelete(serviceId: number) {
     if (confirm('Are you sure you want to delete this employee?')) {
       this.employeeService.deleteEmployee(serviceId).subscribe(
-        () => {
+        (response) => {
           this.employees = this.employees.filter(s => s.id !== serviceId);
+          this.inforMessage = response.message;
         },
         (error) => {
           this.errorMessage = 'Failed to delete employee. Please try again later.';

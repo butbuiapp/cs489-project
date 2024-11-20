@@ -15,3 +15,12 @@
   text-align: center;
   color: #888;
 }
+
+.calendar {
+  width: 50px;
+  height: auto;
+}
+
+.booked {
+  background-color: #fceaf0;
+}

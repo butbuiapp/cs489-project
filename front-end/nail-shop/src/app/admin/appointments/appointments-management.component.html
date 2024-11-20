@@ -1,4 +1,7 @@
-<h2>Appointment Management</h2>
+<div class="d-flex justify-content-between">
+  <h2>Appointment Management</h2>
+  <img src="/assets/calendar.jpg" alt="Show appointments by week" class="calendar"/>
+</div>
 <br/>
 
 <div class="mb-3">
@@ -17,8 +20,9 @@
  <div class="appointments-container">
   <!-- Loop through each appointment -->
   <div *ngIf="appointments?.length">
-    <div *ngFor="let appointment of appointments; trackBy: trackByAppointmentId" class="appointment-card">
-      <app-appointment [appointment]="appointment"></app-appointment>
+    <div *ngFor="let appointment of appointments; trackBy: trackByAppointmentId" 
+      class="appointment-card mb-3" [ngClass]="{'booked': isBooked(appointment.status)}">
+      <app-appointment [appointment]="appointment" (cancel)="onCancelCompleted()"></app-appointment>
     </div>
   </div>
 

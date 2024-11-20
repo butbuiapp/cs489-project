@@ -12,8 +12,13 @@
 
  <!-- Error message display -->
  @if (errorMessage) {
-  <div class="alert alert-danger">
-    {{ errorMessage }}
+  <div class="alert alert-danger" [innerHTML]="errorMessage">
+  </div>
+ }
+
+ @if (inforMessage) {
+  <div class="alert alert-primary">
+    {{ inforMessage }}
   </div>
  }
  

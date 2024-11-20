@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CustomerService } from '../../service/customer.service';
 import { ChangePasswordDto } from '../../model/change-password.model';
 import { AuthService } from '../../service/auth.service';
+import { getErrorMessage } from '../../common/constants';
 
 @Component({
   selector: 'app-customer-change-password',
@@ -45,7 +46,7 @@ export class CustomerChangePasswordComponent implements OnInit {
         },
         (error) => {
           if (error.error) {
-            this.errorMessage = error.error;
+            this.errorMessage = getErrorMessage(error.error);            
           } else {
             this.errorMessage = 'Failed to change password. Please try again.';
           }          

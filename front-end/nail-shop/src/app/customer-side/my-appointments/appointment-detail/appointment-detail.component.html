@@ -4,10 +4,14 @@
   <p>
     <strong>Date:</strong> {{ (appointment().date | date: 'MM/dd/yyyy') + ' ' + appointment().time}}
     <span class="ms-5">
-      <strong>Customer:</strong> {{ appointment().customer.firstName + ' ' + appointment().customer.lastName }}
+      <strong>Customer:</strong> 
+      {{ appointment().customer.firstName + ' ' + appointment().customer.lastName }}
+      ({{ appointment().customer.phoneNumber }})
     </span>
     <span class="ms-5">
-      <strong>Technician:</strong> {{ appointment().technician.firstName + ' ' + appointment().technician.lastName }}
+      <strong>Technician:</strong> 
+      {{ appointment().technician.firstName + ' ' + appointment().technician.lastName }}
+      ({{ appointment().technician.phoneNumber }})
     </span>
     <span class="ms-5">
       <strong>Status:</strong> {{ appointment().status }}

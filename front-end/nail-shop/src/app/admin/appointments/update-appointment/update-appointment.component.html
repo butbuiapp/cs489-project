@@ -1,11 +1,7 @@
-<section>
-  <div class="col-md-10">
+<div class="backdrop" (click)="onCancel()"></div>
+<dialog open>
     <h3 class="fw-normal mb-5" style="letter-spacing: 1px;">
-      @if (editingAppointment) {
       Update Appointment
-      } @else {
-      Book Appointment
-      }
     </h3>
 
     <!-- Error/Info Message Display -->
@@ -17,7 +13,7 @@
       {{ infoMessage }}
     </div>
 
-    <div class="card p-5 pt-3 pb-3 shadow" style="width: 600px; margin: auto;">
+    <div class="card p-5 pt-3 pb-3 shadow" style="width: 700px; margin: auto;">
       <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
         <!-- Date Field -->
         <div class="form-group">
@@ -54,7 +50,7 @@
         <!-- Services -->
         <div class="form-group">
           <div class="d-flex align-items-center justify-content-between">
-            <label for="services">Choose services</label>
+            <label>Choose services</label>
             <label class="text-danger">Total Amount: ${{ totalAmount }}</label>
           </div>
           <div id="services">
@@ -75,15 +71,10 @@
           <textarea id="notes" formControlName="notes" class="form-control" maxlength="255"></textarea>
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary w-100 mt-3" [disabled]="appointmentForm.invalid">
-          @if (editingAppointment) {
-          Update Appointment
-          } @else {
-          Book Appointment
-          }
-        </button>
+        <div class="mt-3">
+          <button type="button" (click)="onCancel()" class="btn btn-secondary me-2">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="appointmentForm.invalid">Update</button>
+        </div>
       </form>
     </div>
-  </div>
-</section>
+</dialog>

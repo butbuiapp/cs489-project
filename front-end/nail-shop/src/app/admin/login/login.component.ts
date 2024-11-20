@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../service/auth.service';
 import { LoginRequestDto } from '../../model/login.model';
+import { getErrorMessage } from '../../common/constants';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +40,7 @@ export class LoginComponent implements OnInit {
         },
         (error) => {
           if (error.error) {
-            this.errorMessage = error.error;            
+            this.errorMessage = getErrorMessage(error.error);            
           }
         }
       );    

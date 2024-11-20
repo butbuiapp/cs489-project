@@ -16,6 +16,7 @@ export class NailServicesComponent implements OnInit {
   isAddingService: boolean = false;
   editingService: NailService | null = null;
   errorMessage: string | null = null;
+  inforMessage: string | null = null;
 
   private nailServiceService = inject(NailServiceService);
 
@@ -45,7 +46,6 @@ export class NailServicesComponent implements OnInit {
 
   onServiceAdded() {
     this.onCloseAddService();
-
     this.loadNailServices(); // Refresh the list of services
   }
 
@@ -57,8 +57,9 @@ export class NailServicesComponent implements OnInit {
   onDeleteService(serviceId: number) {
     if (confirm('Are you sure you want to delete this service?')) {
       this.nailServiceService.deleteService(serviceId).subscribe(
-        () => {
+        (response) => {
           this.nailServices = this.nailServices.filter(s => s.id !== serviceId);
+          this.inforMessage = response.message;
         },
         (error) => {
           this.errorMessage = 'Failed to delete service. Please try again later.';

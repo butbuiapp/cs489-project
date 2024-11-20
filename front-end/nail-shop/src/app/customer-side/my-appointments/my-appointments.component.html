@@ -1,5 +1,5 @@
 <section>
-    <div class="col-md-10">
+    <div>
       <h3 class="fw-normal mb-5" style="letter-spacing: 1px;">My Appointments</h3>
 
     <!-- Error message display -->
@@ -12,7 +12,8 @@
     <div class="appointments-container">
       <!-- Loop through each appointment -->
       <div *ngIf="appointments?.length">
-        <div *ngFor="let appointment of appointments; trackBy: trackByAppointmentId" class="appointment-card mb-3 me-3">
+        <div *ngFor="let appointment of appointments; trackBy: trackByAppointmentId" 
+        class="appointment-card mb-3 me-3"  [ngClass]="{'booked': isBooked(appointment.status)}">
           <app-appointment-detail [appointment]="appointment" (cancel)="onCancelCompleted($event)"></app-appointment-detail>
         </div>
       </div>

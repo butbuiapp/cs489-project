@@ -3,11 +3,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { type NailService } from '../../../model/nail-service.model';
 import { NailServiceService } from '../../../service/nail-service.service';
+import { CommonModule } from '@angular/common';
+import { getErrorMessage } from '../../../common/constants';
 
 @Component({
   selector: 'app-new-service',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './new-service.component.html',
   styleUrl: './new-service.component.css'
 })
@@ -26,8 +28,8 @@ export class NewServiceComponent {
   ngOnInit(): void {
     this.nailServiceForm = this.formBuilder.group({
       name: ['', Validators.required],
-      price: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      duration: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      price: ['', [Validators.required, Validators.pattern(/^\d+$/), this.maxDigitsValidator(3)]],
+      duration: ['', [Validators.required, Validators.pattern(/^\d+$/), this.maxDigitsValidator(3)]],
       description: ['']
     });
     // If editing, populate form with existing data
@@ -36,8 +38,18 @@ export class NewServiceComponent {
     }
   }
 
+  maxDigitsValidator(max: number) {
+    return (control: any) => {
+      const value = control.value;
+      if (value && value.toString().length > max) {
+        return { maxDigits: true };
+      }
+      return null;
+    };
+  }
+
   onSubmit() {
-    this.errorMessage = null; // Reset any previous error message
+    this.errorMessage = ''; // Reset any previous error message
     if (this.nailServiceForm.valid) {
       const nailService: NailService = this.nailServiceForm.value;
       
@@ -48,7 +60,11 @@ export class NewServiceComponent {
             this.serviceAdded.emit();
           },
           (error) => {
-            this.errorMessage = 'Failed to update service. Please try again later.';
+            if (error.error) {
+              this.errorMessage = getErrorMessage(error.error);
+            } else {
+              this.errorMessage = 'Failed to update service. Please try again later.';
+            }
           }
         );
       } else {
@@ -57,8 +73,14 @@ export class NewServiceComponent {
           () => {
             this.serviceAdded.emit(); // Notify parent component
           },
-          () => {
-            this.errorMessage = 'Failed to add service. Please try again later.';
+          (error) => {
+            if (error.error) {
+              this.errorMessage = Object.keys(error.error)
+                .map(key => error.error[key])
+                .join('<br>');
+            } else {
+              this.errorMessage = 'Failed to add service. Please try again later.';
+            }
           }
         );
       }

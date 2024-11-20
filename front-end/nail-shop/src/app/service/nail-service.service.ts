@@ -27,7 +27,7 @@ export class NailServiceService {
     return this.http.put<NailService>(`${this.apiUrl}/${id}`, nailService);
   }
 
-  deleteService(id: number): Observable<void> {
+  deleteService(id: number): Observable<any> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

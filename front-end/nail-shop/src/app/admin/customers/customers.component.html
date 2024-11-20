@@ -22,6 +22,7 @@
       <th>Phone</th>
       <th>Email</th>
       <th>DOB</th>
+      <th>Earned Point</th>
       <th>Action</th>
     </tr>
   </thead>
@@ -33,6 +34,7 @@
         <td>{{ customer.phoneNumber }}</td>
         <td>{{ customer.email }}</td>
         <td>{{ customer.dob | date: 'MM/dd/yyyy'}}</td>
+        <td>{{ customer.earnedPoint == null ? 0 : customer.earnedPoint }}</td>
         <td>
           <button (click)="onViewAppointment(customer.id, customer.firstName, customer.lastName)" 
             class="btn btn-primary me-2">View appointments

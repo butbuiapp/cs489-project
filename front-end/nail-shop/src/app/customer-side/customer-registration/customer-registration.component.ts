@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CustomerService } from '../../service/customer.service';
+import { getErrorMessage } from '../../common/constants';
 
 @Component({
   selector: 'app-customer-registration',
@@ -40,8 +41,10 @@ export class CustomerRegistrationComponent implements OnInit {
         },
         (error) => {
           if (error.error) {
-            this.errorMessage = error.error;            
-          }         
+            this.errorMessage = getErrorMessage(error.error); 
+          } else {
+            this.errorMessage = 'Failed to create customer. Please try again later.';
+          }        
         }
       );
     } else {

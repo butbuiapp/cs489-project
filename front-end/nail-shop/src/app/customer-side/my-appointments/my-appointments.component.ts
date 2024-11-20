@@ -4,6 +4,7 @@ import { AppointmentService } from '../../service/appointment.service';
 import { CommonModule } from '@angular/common';
 import { AppointmentDetailComponent } from './appointment-detail/appointment-detail.component';
 import { AuthService } from '../../service/auth.service';
+import { AppointmentStatusEnum } from '../../model/appointment.model';
 
 @Component({
   selector: 'app-customer-appointment',
@@ -46,6 +47,9 @@ export class MyAppointmentsComponent implements OnInit {
 
   onCancelCompleted(appointmentId: number) {
     this.getAppointmentsByCustomerPhone();
-    //this.appointments = this.appointments.filter(app => app.id !== appointmentId);
+  }
+
+  isBooked(status : AppointmentStatusEnum) {
+    return status === AppointmentStatusEnum.BOOKED;
   }
 }

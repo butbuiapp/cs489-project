@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { NailServiceService } from '../../../service/nail-service.service';
 import { EmployeeService } from '../../../service/employee.service';
 import { NailService } from '../../../model/nail-service.model';
@@ -7,34 +7,38 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppointmentResponse, AppointmentForm, AppointmentRequest } from '../../../model/appointment.model';
-import { AuthService } from '../../../service/auth.service';
 import { AppointmentService } from '../../../service/appointment.service';
-import { Router } from '@angular/router';
 import { getErrorMessage } from '../../../common/constants';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-new-appointment',
+  selector: 'app-update-appointment',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './new-appointment.component.html',
-  styleUrl: './new-appointment.component.css'
+  templateUrl: './update-appointment.component.html',
+  styleUrl: './update-appointment.component.css'
 })
-export class NewAppointmentComponent implements OnInit {
+export class UpdateAppointmentComponent implements OnInit {
+
   services: NailService[] = [];
   employees: Employee[] = [];
   errorMessage: string | null = null;
   infoMessage: string | null = null;
   totalAmount: number = 0;
-  phoneNumber: string = "";
+  appointmentId?: number = 0;
   appointmentForm!: FormGroup;
   today: Date = new Date;
 
   // for edit appointment
+  @Input() appointment : AppointmentResponse | null = null;
   editingAppointment: AppointmentForm | null = null;
 
+  @Output() cancel = new EventEmitter();
+  @Output() updated = new EventEmitter();
+
+  // inject
   private employeeService = inject(EmployeeService);
   private nailServiceService = inject(NailServiceService);
-  private authService = inject(AuthService);
   private appointmentService = inject(AppointmentService);
   private router = inject(Router);
 
@@ -46,19 +50,15 @@ export class NewAppointmentComponent implements OnInit {
       selectedServices: this.fb.array([]),
       notes: [''],
     });
-
-    // get editing appointment
-    const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras.state as { appointment: AppointmentResponse };
-    if (state) {
-      this.editingAppointment = this.convertAppointmentResponseToForm(state.appointment);
-      this.appointmentForm.patchValue(this.editingAppointment);
-    }
-
   }
 
   ngOnInit(): void {
-    this.phoneNumber = this.authService.getLoggedInUsername();
+    if (this.appointment) {
+      this.editingAppointment = this.convertAppointmentResponseToForm(this.appointment);
+      this.appointmentForm.patchValue(this.editingAppointment);
+    }
+
+    this.appointmentId = this.editingAppointment?.id;
     this.loadNailServices();
     this.loadEmployees();
 
@@ -134,7 +134,9 @@ export class NewAppointmentComponent implements OnInit {
         // update appointment
         this.appointmentService.updateAppointment(this.editingAppointment.id, appointmentRequest).subscribe(
           (response) => {
-            this.infoMessage = response.message;
+            //this.infoMessage = response.message;
+            // go back to list
+            this.updated.emit();
           },
           (error) => {
             if (error.error) {
@@ -142,22 +144,7 @@ export class NewAppointmentComponent implements OnInit {
             }
           }
         );
-      } else {
-        // save appointment
-        this.appointmentService.createAppointment(appointmentRequest).subscribe(
-          (response) => {
-            this.infoMessage = response.message;
-
-            // clear form
-            this.resetForm();
-          },
-          (error) => {
-            if (error.error) {
-              this.errorMessage = error.error;
-            }
-          }
-        );
-      }
+      } 
     } else {
       this.errorMessage = 'Input is invalid.';
     }
@@ -192,7 +179,7 @@ export class NewAppointmentComponent implements OnInit {
         id: form.employee,
       },
       customer: {
-        phoneNumber: this.phoneNumber,
+        phoneNumber: '',
       },
       notes: form.notes,
       invoice: form.selectedServices.length > 0
@@ -230,4 +217,7 @@ export class NewAppointmentComponent implements OnInit {
 
   }
 
+  onCancel() {
+    this.cancel.emit();
+  }
 }
