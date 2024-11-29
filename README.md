@@ -52,6 +52,10 @@
 **Required authentication**
  All functionalities except login and create customer must be authenticated and authorizated by role.
 
+**Password must be encrypted**
+
+**Delete functionality: do not physically delete**
+
 ## 3. UML Diagram
 ![image](https://github.com/user-attachments/assets/939da771-95ff-4975-a140-c1ffff519056)
 
