@@ -63,4 +63,10 @@
 
 ![image](https://github.com/user-attachments/assets/5949d2d4-feb8-47e9-8a9d-526c58022622)
 
+## 4. Architecture
+
+## 5. ERD
+![image](https://github.com/user-attachments/assets/4a98ff38-a49b-41f0-ab4f-2c13e2a77aa1)
+
+
 
