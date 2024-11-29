@@ -64,9 +64,9 @@
 ![image](https://github.com/user-attachments/assets/5949d2d4-feb8-47e9-8a9d-526c58022622)
 
 ## 4. Architecture
+![image](https://github.com/user-attachments/assets/eb6f208f-ef33-459a-b7b3-b715a1fd9ce4)
 
 ## 5. ERD
 ![image](https://github.com/user-attachments/assets/4a98ff38-a49b-41f0-ab4f-2c13e2a77aa1)
 
-
-
+## 6. Setup Instructions
