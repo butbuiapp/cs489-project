@@ -64,9 +64,54 @@
 ![image](https://github.com/user-attachments/assets/5949d2d4-feb8-47e9-8a9d-526c58022622)
 
 ## 4. Architecture
-![image](https://github.com/user-attachments/assets/eb6f208f-ef33-459a-b7b3-b715a1fd9ce4)
+**Technologies used:**
+
+**Back-end:** 
+  - SpringBoot, Spring MVC, Spring Data JPA, Spring Security, MapStruct
+  - Database: MySQL
+  - Authentication and Authorization: JWT token
+  - Testing: JUnit, Mockito, Postman
+
+**Front-end**
+  - Angular 17.3
+  - Bootstrap, jwt-decode
+
+![image](https://github.com/user-attachments/assets/bb80ca5e-f048-4fc5-89ec-738b7785396e)
 
 ## 5. ERD
 ![image](https://github.com/user-attachments/assets/4a98ff38-a49b-41f0-ab4f-2c13e2a77aa1)
 
 ## 6. Setup Instructions
+## 6.1 Back-end
+**Using Docker compose to deploy back-end APIs and MySQL on Azure App Services**
+
+  -	Create Dockerfile for back-end to build image
+  -	Create Docker compose file including MySQL and back-end API
+  -	Create jar file (make sure to comment out database information in application.properties file. If not, it does not work when deploying to Azure)
+    
+    mvn clean package
+  -	Build docker image for back-end API
+    
+    docker build -t butbui86/nail-shop-api:1.0.1 .
+  -	Push back-end image to Docker Hub (https://hub.docker.com/)
+    
+    docker push butbui86/nail-shop-api:1.0.1
+  -	Create Web App
+    
+    Go to App Services, create Web App and select Publish as Container.
+
+   ![image](https://github.com/user-attachments/assets/57807b9a-74b0-44c2-84b2-3821094c433a)
+
+   In Deployment -> Deployment Center, configure
+    
+    Container type: Docker Compose
+    
+	   Registry source: Docker Hub
+    
+	   And upload the Docker compose file prepared into Config textbox
+    
+   ![image](https://github.com/user-attachments/assets/6edf87d8-c4a6-4840-ba39-3c2d6be0cb23)
+
+
+
+## 6.2 Front-end
