@@ -78,6 +78,12 @@
 
 ![image](https://github.com/user-attachments/assets/bb80ca5e-f048-4fc5-89ec-738b7785396e)
 
+**Front-end: Angular Components**
+
+![image](https://github.com/user-attachments/assets/a755ee83-5f55-4149-8f20-8c7845f46002)
+
+![image](https://github.com/user-attachments/assets/716e6084-fd58-45ba-af9e-742b89dbae26)
+
 ## 5. ERD
 ![image](https://github.com/user-attachments/assets/4a98ff38-a49b-41f0-ab4f-2c13e2a77aa1)
 
@@ -88,14 +94,15 @@
   -	Create Dockerfile for back-end to build image
   -	Create Docker compose file including MySQL and back-end API
   -	Create jar file (make sure to comment out database information in application.properties file. If not, it does not work when deploying to Azure)
-    
-    mvn clean package
+
+   		mvn clean package
+   	
   -	Build docker image for back-end API
     
-    docker build -t butbui86/nail-shop-api:1.0.1 .
+    	docker build -t butbui86/nail-shop-api:1.0.1 .
   -	Push back-end image to Docker Hub (https://hub.docker.com/)
     
-    docker push butbui86/nail-shop-api:1.0.1
+    	docker push butbui86/nail-shop-api:1.0.1
   -	Create Web App
     
     Go to App Services, create Web App and select Publish as Container.
@@ -104,14 +111,21 @@
 
    In Deployment -> Deployment Center, configure
     
-    Container type: Docker Compose
-    
-	   Registry source: Docker Hub
-    
-	   And upload the Docker compose file prepared into Config textbox
+Container type: Docker Compose
+
+Registry source: Docker Hub
+        
+And upload the Docker compose file prepared into Config textbox
     
    ![image](https://github.com/user-attachments/assets/6edf87d8-c4a6-4840-ba39-3c2d6be0cb23)
 
 
 
 ## 6.2 Front-end
+
+Go to App Services, create Static Web App
+
+![image](https://github.com/user-attachments/assets/5277d223-5f24-46e3-bee7-f7a11d020a32)
+
+![image](https://github.com/user-attachments/assets/b55a5cf1-e0e0-4c16-bcce-49fb4e7eb76b)
+
