@@ -30,6 +30,7 @@
  - Login
  - Update profile
  - Change password
+ - Print receipt
 
 **Technician**
  - Login
@@ -82,13 +83,26 @@
 
 ![image](https://github.com/user-attachments/assets/a755ee83-5f55-4149-8f20-8c7845f46002)
 
-![image](https://github.com/user-attachments/assets/716e6084-fd58-45ba-af9e-742b89dbae26)
+![image](https://github.com/user-attachments/assets/c4606d7a-3145-4e3d-a536-30bbf98b69b5)
 
 ## 5. ERD
 ![image](https://github.com/user-attachments/assets/4a98ff38-a49b-41f0-ab4f-2c13e2a77aa1)
 
-## 6. Setup Instructions
+## 6. Local Setup Instructions
 ## 6.1 Back-end
+**1. Setup database connection in application.properties**
+
+**2. Start the application**
+
+ When the application starts, it creates 3 roles (MANAGER, TECHNICIAN, CUSTOMER) and 1 MANAGER account. The setup is in config/SetupInitialData.java
+
+## 6.2 Front-end
+**1. Configure API URL in app/common/constants.ts**
+
+**2. Start the application (in command line type "ng serve")**
+
+## 7. Azure Setup Instructions
+## 7.1 Back-end
 **Using Docker compose to deploy back-end APIs and MySQL on Azure App Services**
 
   -	Create Dockerfile for back-end to build image
@@ -120,12 +134,17 @@ And upload the Docker compose file prepared into Config textbox
    ![image](https://github.com/user-attachments/assets/6edf87d8-c4a6-4840-ba39-3c2d6be0cb23)
 
 
-
-## 6.2 Front-end
+## 7.2 Front-end
 
 Go to App Services, create Static Web App
 
 ![image](https://github.com/user-attachments/assets/5277d223-5f24-46e3-bee7-f7a11d020a32)
 
 ![image](https://github.com/user-attachments/assets/b55a5cf1-e0e0-4c16-bcce-49fb4e7eb76b)
+
+Then Azure will create a workflow file in the above repository. When there are any changes in this repository, GitHub action is triggered, the code is built and deployed to Azure Static Web App.
+
+![image](https://github.com/user-attachments/assets/afd06d23-e79e-474a-85fd-d797f984bb52)
+
+![image](https://github.com/user-attachments/assets/074eea08-c400-4f1f-9679-b98f16b440cc)
 
