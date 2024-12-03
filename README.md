@@ -39,6 +39,7 @@
  - View appointments
 
 **Customer**
+- Register member
 - Login
  - Update profile
  - Change password
