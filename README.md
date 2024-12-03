@@ -110,7 +110,7 @@
   -	Create Docker compose file including MySQL and back-end API
   -	Create jar file (make sure to comment out database information in application.properties file. If not, it does not work when deploying to Azure)
 
-   		mvn clean package
+   		mvn clean package -DskipTests
    	
   -	Build docker image for back-end API
     
